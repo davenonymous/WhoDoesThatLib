@@ -3,6 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     id("java-library")
     id("com.gradleup.shadow") version "9.0.0-beta9"
+    id("maven-publish")
 }
 
 group = "com.davenonymous.whodoesthatlib"
@@ -82,4 +83,29 @@ tasks.withType<ShadowJar> {
     relocate("picocli", "com.davenonymous.whodoesthatlib.vendor.picocli")
     relocate("org.yaml", "com.davenonymous.whodoesthatlib.vendor")
     exclude("META-INF/maven/**", "META-INF/versions/**")
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/davenonymous/whodoesthatlib")
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
+
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+
+            // Also publish the API jar
+            artifact(tasks["apiJar"])
+            // Also publish the shadow jar
+            // artifact(tasks["shadowJar"])
+            artifact(tasks["minecraftLibShadowJar"])
+        }
+    }
 }

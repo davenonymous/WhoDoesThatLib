@@ -1,2 +1,1 @@
-rootProject.name = "WhoDoesThatLib"
-
+rootProject.name = "whodoesthatlib"
