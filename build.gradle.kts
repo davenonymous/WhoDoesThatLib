@@ -41,9 +41,6 @@ val minecraftLibShadowJar by tasks.registering(ShadowJar::class) {
         exclude(dependency("org.slf4j:.*"))
         exclude(dependency("com.google.*:.*"))
         exclude(dependency("org.ow2.asm:asm:.*"))
-
-        exclude(dependency("org.antlr:.*"))
-        exclude(dependency("org.checkerframework:.*"))
     }
 
     manifest {
@@ -70,6 +67,10 @@ dependencies {
     implementation("org.tomlj:tomlj:1.1.1")
     implementation("info.picocli:picocli:4.7.6")
     implementation("org.yaml:snakeyaml:2.4")
+
+    implementation("org.checkerframework:checker-qual:3.33.0")
+    implementation("org.antlr:antlr4-runtime:4.13.1")
+
 }
 
 tasks.withType<Jar> {
@@ -82,6 +83,8 @@ tasks.withType<ShadowJar> {
     relocate("org.tomlj", "com.davenonymous.whodoesthatlib.vendor.tomlj")
     relocate("picocli", "com.davenonymous.whodoesthatlib.vendor.picocli")
     relocate("org.yaml", "com.davenonymous.whodoesthatlib.vendor")
+    relocate("org.checkerframework", "com.davenonymous.whodoesthatlib.vendor.checkerframework")
+    relocate("org.antlr", "com.davenonymous.whodoesthatlib.vendor.antlr")
     exclude("META-INF/maven/**", "META-INF/versions/**")
 }
 
