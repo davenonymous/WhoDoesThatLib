@@ -14,6 +14,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.jar.Manifest;
 
 public interface IJarInfo {
 	IJarScanner scanner();
@@ -33,6 +34,8 @@ public interface IJarInfo {
 	String getShortestCommonPackage();
 
 	List<IClassInfo> getClasses();
+
+	Manifest getManifest();
 
 	List<Path> files();
 

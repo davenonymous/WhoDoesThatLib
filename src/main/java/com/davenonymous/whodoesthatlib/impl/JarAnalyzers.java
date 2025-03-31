@@ -4,10 +4,7 @@ import com.davenonymous.whodoesthatlib.JarScanner;
 import com.davenonymous.whodoesthatlib.api.IJarAnalyzerRegistry;
 import com.davenonymous.whodoesthatlib.api.analyzers.IJarAnalyzer;
 import com.davenonymous.whodoesthatlib.api.result.IJarInfo;
-import com.davenonymous.whodoesthatlib.impl.jar.ASMClassData;
-import com.davenonymous.whodoesthatlib.impl.jar.AllFiles;
-import com.davenonymous.whodoesthatlib.impl.jar.FabricMod;
-import com.davenonymous.whodoesthatlib.impl.jar.NeoForgeMod;
+import com.davenonymous.whodoesthatlib.impl.jar.*;
 import com.davenonymous.whodoesthatlib.impl.result.JarInfo;
 import com.davenonymous.whodoesthatlib.impl.result.fabric.FabricJarInfo;
 import com.davenonymous.whodoesthatlib.impl.result.neoforge.NeoForgeJarInfo;
@@ -29,6 +26,7 @@ public class JarAnalyzers implements IJarAnalyzerRegistry {
 		register(new NeoForgeMod());
 		register(new FabricMod());
 		register(new AllFiles());
+		register(new JavaManifest());
 	}
 
 	public void register(IJarAnalyzer analyzer) {

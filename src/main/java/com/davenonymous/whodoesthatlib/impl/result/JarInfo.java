@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.nio.file.*;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.jar.Manifest;
 
 public class JarInfo implements IJarInfo {
 	Path jarPath;
@@ -42,6 +43,7 @@ public class JarInfo implements IJarInfo {
 	Map<String, Set<String>> summariesForJson; // (resultCategory -> List of translationKeys)
 	Map<ISummaryDescription, List<Object>> summaries;
 	String shortestBasePackage;
+	private Manifest manifest;
 
 
 	public JarInfo(Path jarPath) {
@@ -289,5 +291,13 @@ public class JarInfo implements IJarInfo {
 
 	public void setShortestBasePackage(String shortestBasePackage) {
 		this.shortestBasePackage = shortestBasePackage;
+	}
+
+	public void setManifest(Manifest manifest) {
+		this.manifest = manifest;
+	}
+
+	public Manifest getManifest() {
+		return manifest;
 	}
 }
