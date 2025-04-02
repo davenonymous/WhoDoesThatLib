@@ -8,7 +8,9 @@ import com.davenonymous.whodoesthatlib.api.result.asm.IFieldInfo;
 import com.davenonymous.whodoesthatlib.api.result.asm.IMethodInfo;
 import org.objectweb.asm.Type;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,6 +27,9 @@ public final class ClassInfo
 	private Set<Type> usedTypes;
 	private Set<String> calledMethods;
 	private Access access;
+
+	private final Map<String, Set<String>> calledMethodCache = new HashMap<>();
+	private final Map<String, Set<Type>> usedTypeCache = new HashMap<>();
 
 	public ClassInfo(
 		IJarInfo owner,
@@ -129,12 +134,25 @@ public final class ClassInfo
 
 	@Override
 	public Set<String> calledMethods(String methodName) {
-		return calledMethods.stream().filter(method -> method.equals(methodName) || method.matches(methodName)).collect(Collectors.toSet());
+		if(!calledMethodCache.containsKey(methodName)) {
+			Set<String> result = calledMethods.stream()
+				.filter(method -> method.equals(methodName) || method.matches(methodName))
+				.collect(Collectors.toSet());
+			calledMethodCache.put(methodName, result);
+		}
+		return calledMethodCache.get(methodName);
 	}
 
 	@Override
 	public Set<Type> usesType(String typeQuery) {
-		return usedTypes.stream().filter(type -> type.getClassName().equals(typeQuery) || type.getClassName().matches(typeQuery)).collect(Collectors.toSet());
+		if(!usedTypeCache.containsKey(typeQuery)) {
+			Set<Type> result = usedTypes.stream()
+				.filter(type -> type.getClassName().equals(typeQuery) || type.getClassName().matches(typeQuery))
+				.collect(Collectors.toSet());
+			usedTypeCache.put(typeQuery, result);
+		}
+
+		return usedTypeCache.get(typeQuery);
 	}
 
 	@Override
