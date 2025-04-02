@@ -6,8 +6,10 @@ import com.davenonymous.whodoesthatlib.api.result.IJarInfo;
 import com.davenonymous.whodoesthatlib.impl.GlobHelper;
 import com.davenonymous.whodoesthatlib.impl.result.JarInfo;
 import com.davenonymous.whodoesthatlib.impl.serialize.GsonHelper;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -42,8 +44,36 @@ public class MinecraftLocalizations implements IJarAnalyzer {
 			}
 
 			for(var translationKey : jsonObject.keySet()) {
-				String translation = jsonObject.get(translationKey).getAsString();
-				jarInfo.addLocalization(translation);
+				JsonElement translationValue = jsonObject.get(translationKey);
+				if(translationValue instanceof JsonArray translationArray) {
+					for(JsonElement element : translationArray) {
+						if(element instanceof JsonPrimitive) {
+							jarInfo.addLocalization(element.getAsString());
+						} else if (element instanceof JsonObject translationObject) {
+							if(!translationObject.has("text")) {
+								continue;
+							}
+							JsonElement textElement = translationObject.get("text");
+							if(!(textElement instanceof JsonPrimitive)) {
+								continue;
+							}
+							jarInfo.addLocalization(textElement.getAsString());
+						}
+					}
+
+				} else if (translationValue instanceof JsonObject translationObject) {
+					if(!translationObject.has("text")) {
+						continue;
+					}
+					JsonElement textElement = translationObject.get("text");
+					if(!(textElement instanceof JsonPrimitive)) {
+						continue;
+					}
+					jarInfo.addLocalization(textElement.getAsString());
+
+				} else if(translationValue instanceof JsonPrimitive) {
+					jarInfo.addLocalization(translationValue.getAsString());
+				}
 			}
 
 		} catch (IOException ignore) {
