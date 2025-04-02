@@ -37,6 +37,7 @@ public class JarInfo implements IJarInfo {
 	IJarInfo parentJar;
 	Set<Type> usedTypes;
 	Set<String> calledMethods;
+	Set<String> localizations;
 	String sha1;
 	JarScanner jarScanner;
 
@@ -60,6 +61,7 @@ public class JarInfo implements IJarInfo {
 		this.tags = new HashMap<>();
 		this.usedTypes = new HashSet<>();
 		this.calledMethods = new HashSet<>();
+		this.localizations = new HashSet<>();
 		this.shortestBasePackage = "";
 		this.parentJar = null;
 		try {
@@ -79,6 +81,7 @@ public class JarInfo implements IJarInfo {
 		return this.jarScanner;
 	}
 
+	@Override
 	public Optional<byte[]> getFileContent(Path path) {
 		return getFileContent(this, path);
 	}
@@ -105,6 +108,7 @@ public class JarInfo implements IJarInfo {
 		return result.build();
 	}
 
+	@Override
 	public boolean getFileSystem(Consumer<FileSystem> fileSystemConsumer) {
 		return getFileSystem(this, fileSystemConsumer);
 	}
@@ -166,6 +170,7 @@ public class JarInfo implements IJarInfo {
 		return this.shortestBasePackage;
 	}
 
+	@Override
 	public <T extends IModResult> T getAnalysisResult(Class<T> resultClass) {
 		//noinspection unchecked
 		return (T) analysisResult.get(resultClass);
@@ -299,5 +304,15 @@ public class JarInfo implements IJarInfo {
 
 	public Manifest getManifest() {
 		return manifest;
+	}
+
+	@Override
+	public Set<String> getLocalizations() {
+		return localizations;
+	}
+
+	public JarInfo addLocalization(String localization) {
+		this.localizations.add(localization);
+		return this;
 	}
 }

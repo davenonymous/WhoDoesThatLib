@@ -57,6 +57,8 @@ public interface IJarInfo {
 
 	Set<String> getCalledMethods();
 
+	Set<String> getLocalizations();
+
 	Map<String, Set<String>> getSummariesForJson();
 
 	Map<ISummaryDescription, List<Object>> getSummaries();

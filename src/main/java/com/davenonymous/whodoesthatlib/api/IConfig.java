@@ -35,6 +35,8 @@ public interface IConfig {
 
 	boolean shouldUseDescriptionsInSummary();
 
+	boolean isLanguageIncluded(String language);
+
 
 	IConfig setUseDescriptionsInSummary(boolean useDescriptionsInSummary);
 
@@ -59,6 +61,12 @@ public interface IConfig {
 	IConfig addOutput(IncludedOutput output);
 
 	IConfig addAllOutputs();
+
+	IConfig setLanguagesToInclude(Collection<String> languages);
+
+	IConfig addLanguageToInclude(String language);
+
+
 
 	enum IncludedOutput {
 		files,

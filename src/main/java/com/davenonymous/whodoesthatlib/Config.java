@@ -12,9 +12,12 @@ public class Config implements IConfig {
 	private Set<IncludedOutput> includedOutputs = new HashSet<>();
 	private Set<String> modBlacklist = new HashSet<>();
 	private Set<String> dependencyBlacklist = new HashSet<>();
+	private Set<String> languagesToInclude = new HashSet<>();
+
 	private boolean useDescriptionsInSummary = false;
 
 	public Config() {
+		this.addLanguageToInclude("en_us");
 	}
 
 	public boolean doesInclude(IncludedOutput output) {
@@ -68,6 +71,10 @@ public class Config implements IConfig {
 
 	public boolean shouldUseDescriptionsInSummary() {
 		return this.useDescriptionsInSummary;
+	}
+
+	public boolean isLanguageIncluded(String language) {
+		return this.languagesToInclude.contains(language);
 	}
 
 	@Override
@@ -157,4 +164,18 @@ public class Config implements IConfig {
 		includedOutputs.clear();
 		return this;
 	}
+
+	@Override
+	public IConfig setLanguagesToInclude(Collection<String> languages) {
+		languagesToInclude.clear();
+		languagesToInclude.addAll(languages);
+		return this;
+	}
+
+	@Override
+	public IConfig addLanguageToInclude(String language) {
+		languagesToInclude.add(language);
+		return this;
+	}
+
 }

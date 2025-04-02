@@ -27,6 +27,7 @@ public class JarAnalyzers implements IJarAnalyzerRegistry {
 		register(new FabricMod());
 		register(new AllFiles());
 		register(new JavaManifest());
+		register(new MinecraftLocalizations());
 	}
 
 	public void register(IJarAnalyzer analyzer) {
