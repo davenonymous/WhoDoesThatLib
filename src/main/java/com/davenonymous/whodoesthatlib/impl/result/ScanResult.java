@@ -97,7 +97,8 @@ public class ScanResult implements IScanResult {
 			return Collections.emptyList();
 		}
 
-		return jarScanner.descriptors.get(summaryType).stream().map(p -> (T) p).toList();
+		//noinspection unchecked
+		return (List<T>) jarScanner.descriptors.get(summaryType);
 	}
 
 	public List<IJarInfo> jars() {

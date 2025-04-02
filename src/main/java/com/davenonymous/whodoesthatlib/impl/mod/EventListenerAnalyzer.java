@@ -19,6 +19,11 @@ import java.util.*;
 public class EventListenerAnalyzer implements IModMethodAnalyzer<EventResult> {
 	private JsonObject jsonResult;
 	private Map<Type, List<IMethodInfo>> eventResultBuilder;
+	private List<EventDescription> descriptors;
+	private static final Set<String> validAnnotations = Set.of(
+		"net.neoforged.bus.api.SubscribeEvent",
+		"net.minecraftforge.eventbus.api.SubscribeEvent"
+	);
 
 	@Override
 	public String getKey() {
@@ -39,6 +44,11 @@ public class EventListenerAnalyzer implements IModMethodAnalyzer<EventResult> {
 	}
 
 	@Override
+	public void onInit(IScanResult scanResult) {
+		descriptors = scanResult.getSummaryDescriptions(EventDescription.ID);
+	}
+
+	@Override
 	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
 		jsonResult = new JsonObject();
 		eventResultBuilder = new HashMap<>();
@@ -46,13 +56,6 @@ public class EventListenerAnalyzer implements IModMethodAnalyzer<EventResult> {
 
 	@Override
 	public void visitMethod(IScanResult scanResult, IJarInfo jarInfo, IModInfo modInfo, IClassInfo classInfo, IMethodInfo methodInfo) {
-		List<EventDescription> descriptors = scanResult.getSummaryDescriptions(EventDescription.ID);
-
-		Set<String> validAnnotations = Set.of(
-			"net.neoforged.bus.api.SubscribeEvent",
-			"net.minecraftforge.eventbus.api.SubscribeEvent"
-		);
-
 		for(var annotation : methodInfo.annotations()) {
 			if(validAnnotations.contains(annotation.type().getClassName())) {
 				Type eventClass = methodInfo.parameters().getFirst();

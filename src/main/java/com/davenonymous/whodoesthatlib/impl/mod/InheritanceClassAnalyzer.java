@@ -21,6 +21,12 @@ import java.util.Map;
 public class InheritanceClassAnalyzer implements IModClassAnalyzer<InheritanceResult> {
 	private JsonObject jsonResult;
 	private Map<Type, List<IClassInfo>> objResult;
+	private List<InheritanceDescription> descriptors;
+
+	@Override
+	public void onInit(IScanResult scanResult) {
+		descriptors = scanResult.getSummaryDescriptions(InheritanceDescription.ID);
+	}
 
 	@Override
 	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
@@ -43,8 +49,6 @@ public class InheritanceClassAnalyzer implements IModClassAnalyzer<InheritanceRe
 
 	@Override
 	public void visitClass(IScanResult scanResult, IJarInfo jarInfo, IModInfo modInfo, IClassInfo classInfo) {
-		List<InheritanceDescription> descriptors = scanResult.getSummaryDescriptions(InheritanceDescription.ID);
-
 		for(InheritanceDescription description : descriptors) {
 			String parentClassName = description.getParentClassName();
 			if(classInfo.inherits(scanResult, parentClassName)) {

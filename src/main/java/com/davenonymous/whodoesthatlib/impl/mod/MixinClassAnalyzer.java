@@ -21,6 +21,12 @@ import java.util.Map;
 public class MixinClassAnalyzer implements IModClassAnalyzer<MixinResult> {
 	private JsonObject jsonResult;
 	private Map<Type, List<IClassInfo>> result;
+	private List<MixinDescription> descriptors;
+
+	@Override
+	public void onInit(IScanResult scanResult) {
+		descriptors = scanResult.getSummaryDescriptions(MixinDescription.ID);
+	}
 
 	@Override
 	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
@@ -48,7 +54,6 @@ public class MixinClassAnalyzer implements IModClassAnalyzer<MixinResult> {
 			return;
 		}
 
-		List<MixinDescription> descriptors = scanResult.getSummaryDescriptions(MixinDescription.ID);
 		var annotationParams = mixinAnnotation.get().params();
 		Object targetClass = annotationParams.get("value");
 		if(targetClass instanceof Type targetClassType) {

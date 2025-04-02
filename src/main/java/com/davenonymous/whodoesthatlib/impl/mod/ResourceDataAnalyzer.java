@@ -27,7 +27,7 @@ public class ResourceDataAnalyzer implements IModFileAnalyzer {
 	}
 
 	@Override
-	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
+	public void onInit(IScanResult scanResult) {
 		this.descriptors = scanResult.getSummaryDescriptions(FileGlobDescription.ID);
 		this.compiledGlobs = descriptors.stream().collect(Collectors.toMap(
 			FileGlobDescription::getPathGlob,
@@ -39,7 +39,6 @@ public class ResourceDataAnalyzer implements IModFileAnalyzer {
 
 	@Override
 	public void visitFile(IScanResult scanResult, IJarInfo jarInfo, @Nullable IModInfo modInfo, Path file) {
-
 		for(FileGlobDescription descriptor : descriptors) {
 			Predicate<String> matcher = compiledGlobs.get(descriptor.getPathGlob()).asMatchPredicate();
 			if(matcher.test(file.toString())) {

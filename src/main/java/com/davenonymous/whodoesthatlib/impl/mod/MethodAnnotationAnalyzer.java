@@ -16,15 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class MethodAnnotationAnalyzer extends AnnotationAnalyzer<MethodAnnotationResult, IMethodInfo> {
+	@Override
+	public StringyElementType elementType() {
+		return StringyElementType.METHOD;
+	}
 
 	@Override
 	public void visit(IScanResult scanResult, IJarInfo jarInfo, IModInfo modInfo, IMethodInfo info) {
-		List<AnnotationDescription> descriptors = scanResult.getSummaryDescriptions(getKey());
-		List<AnnotationDescription> filteredDescriptors = descriptors.stream()
-			.filter(descriptor -> descriptor.getElementType().equals(StringyElementType.METHOD))
-			.sorted(Comparator.comparing(AnnotationDescription::getAnnotationClassName))
-			.toList();
-
 		for(AnnotationDescription annotation : filteredDescriptors) {
 			Optional<IAnnotationInfo> matchingAnnotation = info.isAnnotatedWith(annotation.getAnnotationClassName());
 			if(matchingAnnotation.isPresent()) {

@@ -17,6 +17,12 @@ import java.util.*;
 public class CalledMethodsAnalyzer implements IModClassAnalyzer<CalledMethodResult> {
 	private JsonObject jsonResult;
 	private Map<String, List<IClassInfo>> objResult;
+	private List<CalledMethodDescription> descriptors;
+
+	@Override
+	public void onInit(IScanResult scanResult) {
+		descriptors = scanResult.getSummaryDescriptions(CalledMethodDescription.ID);
+	}
 
 	@Override
 	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
@@ -39,8 +45,6 @@ public class CalledMethodsAnalyzer implements IModClassAnalyzer<CalledMethodResu
 
 	@Override
 	public void visitClass(IScanResult scanResult, IJarInfo jarInfo, IModInfo modInfo, IClassInfo classInfo) {
-		List<CalledMethodDescription> descriptors = scanResult.getSummaryDescriptions(CalledMethodDescription.ID);
-
 		for(CalledMethodDescription description : descriptors) {
 			String methodQuery = description.getMethodQuery();
 			Set<String> matchingCalls = classInfo.calledMethods(methodQuery);

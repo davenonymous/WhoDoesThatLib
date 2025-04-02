@@ -23,6 +23,12 @@ import java.util.Map;
 public class FieldTypeAnalyzer implements IModFieldAnalyzer<FieldResult> {
 	private JsonObject jsonResult;
 	private Map<Type, List<IFieldInfo>> fieldResultBuilder;
+	private List<FieldTypeDescription> descriptors;
+
+	@Override
+	public void onInit(IScanResult scanResult) {
+		descriptors = scanResult.getSummaryDescriptions(getKey());
+	}
 
 	@Override
 	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
@@ -32,8 +38,6 @@ public class FieldTypeAnalyzer implements IModFieldAnalyzer<FieldResult> {
 
 	@Override
 	public void visitField(IScanResult scanResult, IJarInfo jarInfo, @Nullable IModInfo modInfo, IClassInfo classInfo, IFieldInfo fieldInfo) {
-		List<FieldTypeDescription> descriptors = scanResult.getSummaryDescriptions(getKey());
-
 		String fieldTypeClassName = fieldInfo.type().getClassName();
 		for(var description : descriptors) {
 			if(!scanResult.doesInheritFrom(fieldTypeClassName, description.getFieldClassName())) {

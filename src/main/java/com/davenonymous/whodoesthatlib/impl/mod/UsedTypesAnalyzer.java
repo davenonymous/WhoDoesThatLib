@@ -18,6 +18,12 @@ import java.util.*;
 public class UsedTypesAnalyzer implements IModClassAnalyzer<UsedTypeResult> {
 	private JsonObject jsonResult;
 	private Map<Type, List<IClassInfo>> objResult;
+	private List<UsedTypeDescription> descriptors;
+
+	@Override
+	public void onInit(IScanResult scanResult) {
+		descriptors = scanResult.getSummaryDescriptions(UsedTypeDescription.ID);
+	}
 
 	@Override
 	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
@@ -40,8 +46,6 @@ public class UsedTypesAnalyzer implements IModClassAnalyzer<UsedTypeResult> {
 
 	@Override
 	public void visitClass(IScanResult scanResult, IJarInfo jarInfo, IModInfo modInfo, IClassInfo classInfo) {
-		List<UsedTypeDescription> descriptors = scanResult.getSummaryDescriptions(UsedTypeDescription.ID);
-
 		for(UsedTypeDescription description : descriptors) {
 			String typeClassName = description.getTypeClassName();
 			Set<Type> matchingTypes = classInfo.usesType(typeClassName);

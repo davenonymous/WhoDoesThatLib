@@ -75,6 +75,12 @@ public class ResultAnalyzer {
 	}
 
 	private void performAnalysis() {
+		classAnalyzers.forEach(analyzer -> analyzer.onInit(result));
+		fieldAnalyzers.forEach(analyzer -> analyzer.onInit(result));
+		methodAnalyzers.forEach(analyzer -> analyzer.onInit(result));
+		fileAnalyzers.forEach(analyzer -> analyzer.onInit(result));
+		annotationAnalyzers.forEach(analyzer -> analyzer.onInit(result));
+
 		for(var jarInfo : result.jars()) {
 			IModInfo mod = null;
 			if(jarInfo instanceof INeoForgeJarInfo neoForgeJarInfo) {
