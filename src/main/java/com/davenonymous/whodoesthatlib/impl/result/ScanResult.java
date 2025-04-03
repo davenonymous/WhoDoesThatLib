@@ -20,7 +20,7 @@ public class ScanResult implements IScanResult {
 	Map<String, Set<Type>> classToParentsInfo;
 	JarScanner jarScanner;
 
-	public ScanResult(JarScanner jarScanner, List<IJarInfo> analyzedJars, List<IJarInfo> heritageJars) {
+	public ScanResult(JarScanner jarScanner, Collection<IJarInfo> analyzedJars, Collection<IJarInfo> heritageJars) {
 		this.jarScanner = jarScanner;
 		this.jars = new ArrayList<>(analyzedJars);
 

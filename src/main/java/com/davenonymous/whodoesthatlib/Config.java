@@ -15,6 +15,8 @@ public class Config implements IConfig {
 	private Set<String> languagesToInclude = new HashSet<>();
 
 	private boolean useDescriptionsInSummary = false;
+	private int threadsForScanning = 2;
+	private int scanTimeoutSeconds = 300;
 
 	public Config() {
 		this.addLanguageToInclude("en_us");
@@ -75,6 +77,34 @@ public class Config implements IConfig {
 
 	public boolean isLanguageIncluded(String language) {
 		return this.languagesToInclude.contains(language);
+	}
+
+	public int getThreadsForScanning() {
+		int availableCores = Runtime.getRuntime().availableProcessors();
+		if(threadsForScanning <= 0 || threadsForScanning > availableCores) {
+			threadsForScanning = availableCores;
+		}
+
+		return threadsForScanning;
+	}
+
+	public int getScanTimeoutSeconds() {
+		if(scanTimeoutSeconds <= 0) {
+			scanTimeoutSeconds = Integer.MAX_VALUE;
+		}
+		return scanTimeoutSeconds;
+	}
+
+	@Override
+	public IConfig setScanTimeoutSeconds(int seconds) {
+		this.scanTimeoutSeconds = seconds;
+		return this;
+	}
+
+	@Override
+	public IConfig setThreadsForScanning(int threads) {
+		this.threadsForScanning = threads;
+		return this;
 	}
 
 	@Override

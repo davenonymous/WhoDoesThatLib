@@ -37,6 +37,13 @@ public interface IConfig {
 
 	boolean isLanguageIncluded(String language);
 
+	int getThreadsForScanning();
+
+	int getScanTimeoutSeconds();
+
+	IConfig setScanTimeoutSeconds(int seconds);
+
+	IConfig setThreadsForScanning(int threads);
 
 	IConfig setUseDescriptionsInSummary(boolean useDescriptionsInSummary);
 

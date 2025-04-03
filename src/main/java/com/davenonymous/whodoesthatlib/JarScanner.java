@@ -104,11 +104,15 @@ public class JarScanner implements IJarScanner {
 			Files.walkFileTree(path, visitor);
 		}
 
+		var visitorJars = visitor.getJarFiles().values();
+		var heritageJars = heritageVisitor.getJarFiles().values();
+
 		var scanResult = new ScanResult(
 			this,
-			visitor.getJarFiles().values().stream().toList(),
-			heritageVisitor.getJarFiles().values().stream().toList()
+			visitorJars,
+			heritageJars
 		);
+
 		var analyzer = new ResultAnalyzer(this, scanResult);
 		return scanResult;
 
