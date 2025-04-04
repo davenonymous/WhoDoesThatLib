@@ -8,6 +8,7 @@ import com.davenonymous.whodoesthatlib.api.analyzers.IModMethodAnalyzer;
 import com.davenonymous.whodoesthatlib.api.result.IModInfo;
 import com.davenonymous.whodoesthatlib.api.result.IScanResult;
 import com.davenonymous.whodoesthatlib.api.result.asm.IClassInfo;
+import com.davenonymous.whodoesthatlib.api.result.fabric.IFabricJarInfo;
 import com.davenonymous.whodoesthatlib.api.result.mod.IModResult;
 import com.davenonymous.whodoesthatlib.api.result.neoforge.INeoForgeJarInfo;
 import com.davenonymous.whodoesthatlib.impl.mod.*;
@@ -85,6 +86,8 @@ public class ResultAnalyzer {
 			IModInfo mod = null;
 			if(jarInfo instanceof INeoForgeJarInfo neoForgeJarInfo) {
 				mod = neoForgeJarInfo.mods().getFirst();
+			} else if(jarInfo instanceof IFabricJarInfo fabricJarInfo) {
+				mod = fabricJarInfo.mods().getFirst();
 			}
 			classAnalyzers.forEach(analyzer -> analyzer.onJarStart(result, jarInfo));
 			fieldAnalyzers.forEach(analyzer -> analyzer.onJarStart(result, jarInfo));
