@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 public class JarScanner implements IJarScanner {
 	private List<Path> analysisPaths = new ArrayList<>();
@@ -22,11 +23,16 @@ public class JarScanner implements IJarScanner {
 
 	public Map<String, BiFunction<String, Map<String, Object>, ISummaryDescription>> descriptorTypeLoaders = new HashMap<>();
 	public Map<String, List<ISummaryDescription>> descriptors;
+	public Map<String, List<ISummaryDescription>> descriptorsByTag;
 	public Config config = new Config();
 	public JarAnalyzers jarAnalyzers = new JarAnalyzers(this);
 
 	public Config config() {
 		return config;
+	}
+
+	public List<ISummaryDescription> getSummaryDescriptionsByTag(String tag) {
+		return descriptorsByTag.getOrDefault(tag, Collections.emptyList());
 	}
 
 	public IJarAnalyzerRegistry jarAnalyzers() {
@@ -90,6 +96,13 @@ public class JarScanner implements IJarScanner {
 			Files.walkFileTree(path, descriptorVisitor);
 		}
 		this.descriptors = descriptorVisitor.result();
+		this.descriptorsByTag = new HashMap<>();
+		this.descriptors.values().stream().flatMap(Collection::stream).forEach(description -> {
+			for(var tag : description.tags()) {
+				this.descriptorsByTag.computeIfAbsent(tag, k -> new ArrayList<>()).add(description);
+			}
+		});
+
 		return this;
 	}
 

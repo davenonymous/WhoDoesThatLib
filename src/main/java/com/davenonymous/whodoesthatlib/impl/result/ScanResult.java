@@ -101,6 +101,15 @@ public class ScanResult implements IScanResult {
 		return (List<T>) jarScanner.descriptors.get(summaryType);
 	}
 
+	@Override
+	public List<ISummaryDescription> getSummaryDescriptionsByTag(String tag) {
+		if(jarScanner.descriptors == null || jarScanner.descriptors.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		return jarScanner.getSummaryDescriptionsByTag(tag);
+	}
+
 	public List<IJarInfo> jars() {
 		return jars;
 	}

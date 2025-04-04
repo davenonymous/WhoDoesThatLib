@@ -92,4 +92,11 @@ public interface IScanResult {
 	 * @return A list of descriptors of the specified category
 	 */
 	<T extends ISummaryDescription> List<T> getSummaryDescriptions(String category);
+
+	/**
+	 * Returns a list of all descriptors matching the given tag.<br/>
+	 *
+	 * @return A list of {@link ISummaryDescription}s.
+	 */
+	List<ISummaryDescription> getSummaryDescriptionsByTag(String tag);
 }

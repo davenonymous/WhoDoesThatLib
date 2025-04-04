@@ -62,7 +62,6 @@ public class Config implements IConfig {
 		return doesInclude(IncludedOutput.summary);
 	}
 
-
 	public boolean isModBlacklisted(String modId) {
 		return this.modBlacklist.contains(modId);
 	}

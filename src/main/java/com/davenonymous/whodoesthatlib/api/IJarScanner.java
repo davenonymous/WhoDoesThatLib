@@ -8,6 +8,7 @@ import com.davenonymous.whodoesthatlib.api.result.IScanResult;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -60,12 +61,11 @@ public interface IJarScanner {
 	 */
 	IConfig config();
 
-
 	/**
 	 * Returns the jar analyzers registry.<br/>
 	 * <p>
 	 * This is used to register custom jar analyzers.<br/>
-	 * See {@link IJarAnalyzer} for more information about how to implement a custom jar analyzer.<br/>
+	 * See {@link IJarAnalyzerRegistry} for more information about how to implement a custom jar analyzer.<br/>
 	 *
 	 * @return The jar analyzers registry.
 	 */
