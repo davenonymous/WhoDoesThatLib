@@ -17,15 +17,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AnnotationAnalyzer<T extends IModResult, U> implements IModAnalyzerWithValue<T> {
-	protected JsonObject jsonResult;
-	protected Map<Type, List<U>> eventResultBuilder;
-
+public abstract class AnnotationAnalyzer<T extends IModResult, U> extends ASMAnalyzer<T, Type, U, AnnotationDescription> implements IModAnalyzerWithValue<T> {
 	protected List<AnnotationDescription> filteredDescriptors;
 
 	@Override
 	public void onInit(IScanResult scanResult) {
-		List<AnnotationDescription> descriptors = scanResult.getSummaryDescriptions(getKey());
+		super.onInit(scanResult);
 		filteredDescriptors = descriptors.stream()
 			.filter(descriptor -> descriptor.getElementType().equals(elementType()))
 			.sorted(Comparator.comparing(AnnotationDescription::getAnnotationClassName))
@@ -35,20 +32,6 @@ public abstract class AnnotationAnalyzer<T extends IModResult, U> implements IMo
 	@Override
 	public String getKey() {
 		return AnnotationDescription.ID;
-	}
-
-	@Override
-	public JsonElement encodedResult() {
-		if(jsonResult.isEmpty()) {
-			return JsonNull.INSTANCE;
-		}
-		return jsonResult;
-	}
-
-	@Override
-	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
-		jsonResult = new JsonObject();
-		eventResultBuilder = new HashMap<>();
 	}
 
 	public abstract StringyElementType elementType();

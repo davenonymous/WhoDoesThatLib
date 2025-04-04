@@ -11,8 +11,6 @@ import com.davenonymous.whodoesthatlib.impl.serialize.StringyElementType;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 
 public class FieldAnnotationAnalyzer extends AnnotationAnalyzer<FieldAnnotationResult, IFieldInfo> {
@@ -32,7 +30,7 @@ public class FieldAnnotationAnalyzer extends AnnotationAnalyzer<FieldAnnotationR
 					jsonResult.add(annotationClassName, new JsonArray());
 				}
 
-				eventResultBuilder.computeIfAbsent(annotationInfo.type(), k -> new ArrayList<>()).add(info);
+				objResult.computeIfAbsent(annotationInfo.type(), k -> new ArrayList<>()).add(info);
 				jsonResult.getAsJsonArray(annotationClassName).add(info.owner().type().getClassName() + "#" + info.name());
 
 				jarInfo.addSummary(annotation, info);
@@ -42,6 +40,6 @@ public class FieldAnnotationAnalyzer extends AnnotationAnalyzer<FieldAnnotationR
 
 	@Override
 	public FieldAnnotationResult result() {
-		return new FieldAnnotationResult(eventResultBuilder);
+		return new FieldAnnotationResult(objResult);
 	}
 }

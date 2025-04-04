@@ -16,10 +16,7 @@ import org.objectweb.asm.Type;
 
 import java.util.*;
 
-public class EventListenerAnalyzer implements IModMethodAnalyzer<EventResult> {
-	private JsonObject jsonResult;
-	private Map<Type, List<IMethodInfo>> eventResultBuilder;
-	private List<EventDescription> descriptors;
+public class EventListenerAnalyzer extends ASMAnalyzer<EventResult, Type, IMethodInfo, EventDescription> implements IModMethodAnalyzer<EventResult> {
 	private static final Set<String> validAnnotations = Set.of(
 		"net.neoforged.bus.api.SubscribeEvent",
 		"net.minecraftforge.eventbus.api.SubscribeEvent"
@@ -31,27 +28,8 @@ public class EventListenerAnalyzer implements IModMethodAnalyzer<EventResult> {
 	}
 
 	@Override
-	public JsonElement encodedResult() {
-		if(jsonResult.isEmpty()) {
-			return JsonNull.INSTANCE;
-		}
-		return jsonResult;
-	}
-
-	@Override
 	public EventResult result() {
-		return new EventResult(eventResultBuilder);
-	}
-
-	@Override
-	public void onInit(IScanResult scanResult) {
-		descriptors = scanResult.getSummaryDescriptions(EventDescription.ID);
-	}
-
-	@Override
-	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
-		jsonResult = new JsonObject();
-		eventResultBuilder = new HashMap<>();
+		return new EventResult(objResult);
 	}
 
 	@Override
@@ -63,7 +41,7 @@ public class EventListenerAnalyzer implements IModMethodAnalyzer<EventResult> {
 				if(!jsonResult.has(eventClassName)) {
 					jsonResult.add(eventClassName, new JsonArray());
 				}
-				eventResultBuilder.computeIfAbsent(eventClass, k -> new ArrayList<>()).add(methodInfo);
+				objResult.computeIfAbsent(eventClass, k -> new ArrayList<>()).add(methodInfo);
 				jsonResult.getAsJsonArray(eventClassName).add(classInfo.type().getClassName() + "#" + methodInfo.name());
 
 				for(EventDescription description : descriptors) {

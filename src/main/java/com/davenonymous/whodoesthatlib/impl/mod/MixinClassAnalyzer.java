@@ -8,43 +8,15 @@ import com.davenonymous.whodoesthatlib.api.result.IScanResult;
 import com.davenonymous.whodoesthatlib.api.result.asm.IClassInfo;
 import com.davenonymous.whodoesthatlib.api.result.mod.MixinResult;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
 import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class MixinClassAnalyzer implements IModClassAnalyzer<MixinResult> {
-	private JsonObject jsonResult;
-	private Map<Type, List<IClassInfo>> result;
-	private List<MixinDescription> descriptors;
-
-	@Override
-	public void onInit(IScanResult scanResult) {
-		descriptors = scanResult.getSummaryDescriptions(MixinDescription.ID);
-	}
-
-	@Override
-	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
-		jsonResult = new JsonObject();
-		result = new HashMap<>();
-	}
-
-	@Override
-	public JsonElement encodedResult() {
-		if(jsonResult.isEmpty()) {
-			return JsonNull.INSTANCE;
-		}
-		return jsonResult;
-	}
+public class MixinClassAnalyzer extends ASMAnalyzer<MixinResult, Type, IClassInfo, MixinDescription> implements IModClassAnalyzer<MixinResult> {
 
 	@Override
 	public MixinResult result() {
-		return new MixinResult(result);
+		return new MixinResult(objResult);
 	}
 
 	@Override
@@ -62,7 +34,7 @@ public class MixinClassAnalyzer implements IModClassAnalyzer<MixinResult> {
 				jsonResult.add(targetClassName, new JsonArray());
 			}
 			jsonResult.getAsJsonArray(targetClassName).add(classInfo.type().getClassName());
-			result.computeIfAbsent(targetClassType, k -> new ArrayList<>()).add(classInfo);
+			objResult.computeIfAbsent(targetClassType, k -> new ArrayList<>()).add(classInfo);
 
 			for(MixinDescription description : descriptors) {
 				if(description.getTargetClassName().equals(targetClassName)) {

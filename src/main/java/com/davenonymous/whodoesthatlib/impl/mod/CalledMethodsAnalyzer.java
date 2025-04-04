@@ -14,29 +14,7 @@ import com.google.gson.JsonObject;
 
 import java.util.*;
 
-public class CalledMethodsAnalyzer implements IModClassAnalyzer<CalledMethodResult> {
-	private JsonObject jsonResult;
-	private Map<String, List<IClassInfo>> objResult;
-	private List<CalledMethodDescription> descriptors;
-
-	@Override
-	public void onInit(IScanResult scanResult) {
-		descriptors = scanResult.getSummaryDescriptions(CalledMethodDescription.ID);
-	}
-
-	@Override
-	public void onJarStart(IScanResult scanResult, IJarInfo jarInfo) {
-		jsonResult = new JsonObject();
-		objResult = new HashMap<>();
-	}
-
-	@Override
-	public JsonElement encodedResult() {
-		if(jsonResult.isEmpty()) {
-			return JsonNull.INSTANCE;
-		}
-		return jsonResult;
-	}
+public class CalledMethodsAnalyzer extends ASMAnalyzer<CalledMethodResult, String, IClassInfo, CalledMethodDescription> implements IModClassAnalyzer<CalledMethodResult> {
 
 	@Override
 	public CalledMethodResult result() {

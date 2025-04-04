@@ -32,7 +32,7 @@ public class MethodAnnotationAnalyzer extends AnnotationAnalyzer<MethodAnnotatio
 					jsonResult.add(annotationClassName, new JsonArray());
 				}
 
-				eventResultBuilder.computeIfAbsent(annotationInfo.type(), k -> new ArrayList<>()).add(info);
+				objResult.computeIfAbsent(annotationInfo.type(), k -> new ArrayList<>()).add(info);
 				jsonResult.getAsJsonArray(annotationClassName).add(info.owner().type().getClassName());
 
 				jarInfo.addSummary(annotation, info);
@@ -42,6 +42,6 @@ public class MethodAnnotationAnalyzer extends AnnotationAnalyzer<MethodAnnotatio
 
 	@Override
 	public MethodAnnotationResult result() {
-		return new MethodAnnotationResult(eventResultBuilder);
+		return new MethodAnnotationResult(objResult);
 	}
 }
