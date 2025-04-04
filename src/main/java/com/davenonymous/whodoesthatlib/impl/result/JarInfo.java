@@ -35,6 +35,7 @@ public class JarInfo implements IJarInfo {
 	Map<String, Set<ISummaryDescription>> tags;
 	JsonElement jsonResult;
 	IJarInfo parentJar;
+	Set<IJarInfo> childJars;
 	Set<Type> usedTypes;
 	Set<String> calledMethods;
 	Set<String> localizations;
@@ -64,6 +65,7 @@ public class JarInfo implements IJarInfo {
 		this.localizations = new HashSet<>();
 		this.shortestBasePackage = "";
 		this.parentJar = null;
+		this.childJars = new HashSet<>();
 		try {
 			this.sha1 = FileHash.calcSHA1(jarPath.toFile());
 		} catch (Exception e) {
@@ -263,8 +265,14 @@ public class JarInfo implements IJarInfo {
 		return calledMethods;
 	}
 
+	@Override
 	public List<IClassInfo> getClasses() {
 		return classes;
+	}
+
+	@Override
+	public Set<IJarInfo> getNestedJars() {
+		return childJars;
 	}
 
 	public JarInfo addFile(Path path) {
@@ -294,6 +302,10 @@ public class JarInfo implements IJarInfo {
 		this.parentJar = parentJar;
 	}
 
+	public void addChildJar(IJarInfo childJar) {
+		this.childJars.add(childJar);
+	}
+
 	public void setShortestBasePackage(String shortestBasePackage) {
 		this.shortestBasePackage = shortestBasePackage;
 	}
@@ -314,5 +326,18 @@ public class JarInfo implements IJarInfo {
 	public JarInfo addLocalization(String localization) {
 		this.localizations.add(localization);
 		return this;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof JarInfo jarInfo)) {
+			return false;
+		}
+		return Objects.equals(jarPath, jarInfo.jarPath) && Objects.equals(parentJar, jarInfo.parentJar);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(jarPath, parentJar);
 	}
 }

@@ -64,8 +64,9 @@ public class JarFileVisitor extends SimpleFileVisitor<Path> {
 				} else {
 					jarResult = jarScanner.jarAnalyzers().runAll(file, fs);
 				}
-				if(parentJar != null && jarResult instanceof JarInfo jarInfo) {
+				if(parentJar != null && jarResult instanceof JarInfo jarInfo && parentJar instanceof JarInfo parentJarInfo) {
 					jarInfo.setParentJar(parentJar);
+					parentJarInfo.addChildJar(jarInfo);
 				}
 				jarFiles.put(file, jarResult);
 

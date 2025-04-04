@@ -78,7 +78,6 @@ public interface IConfig {
 	IConfig addLanguageToInclude(String language);
 
 
-
 	enum IncludedOutput {
 		files,
 		classes,

@@ -35,6 +35,8 @@ public interface IJarInfo {
 
 	List<IClassInfo> getClasses();
 
+	Set<IJarInfo> getNestedJars();
+
 	Manifest getManifest();
 
 	List<Path> files();
