@@ -25,7 +25,11 @@ public class ASMClassData implements IJarAnalyzer {
 		try(InputStream in = Files.newInputStream(file)) {
 			ClassReader reader = new ClassReader(in);
 			ClassFileParser parser = new ClassFileParser(result);
-			reader.accept(parser, 0);
+			int parsingOptions = 0;
+			if(!scanner.config().enableCodeParsing()) {
+				parsingOptions |= ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG;
+			}
+			reader.accept(parser, parsingOptions);
 			if(result instanceof JarInfo jarInfoResult) {
 				jarInfoResult.addClass(parser.result());
 			}

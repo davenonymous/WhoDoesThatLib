@@ -37,6 +37,8 @@ public interface IConfig {
 
 	boolean isLanguageIncluded(String language);
 
+	boolean enableCodeParsing();
+
 	int getThreadsForScanning();
 
 	int getScanTimeoutSeconds();
@@ -46,6 +48,8 @@ public interface IConfig {
 	IConfig setThreadsForScanning(int threads);
 
 	IConfig setUseDescriptionsInSummary(boolean useDescriptionsInSummary);
+
+	IConfig setEnableCodeParsing(boolean enableCodeParsing);
 
 	IConfig applyPreset(IncludePresets preset);
 

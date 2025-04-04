@@ -15,6 +15,7 @@ public class Config implements IConfig {
 	private Set<String> languagesToInclude = new HashSet<>();
 
 	private boolean useDescriptionsInSummary = false;
+	private boolean enableCodeParsing = true;
 	private int threadsForScanning = 2;
 	private int scanTimeoutSeconds = 300;
 
@@ -78,6 +79,10 @@ public class Config implements IConfig {
 		return this.languagesToInclude.contains(language);
 	}
 
+	public boolean enableCodeParsing() {
+		return this.enableCodeParsing;
+	}
+
 	public int getThreadsForScanning() {
 		int availableCores = Runtime.getRuntime().availableProcessors();
 		if(threadsForScanning <= 0 || threadsForScanning > availableCores) {
@@ -109,6 +114,12 @@ public class Config implements IConfig {
 	@Override
 	public IConfig setUseDescriptionsInSummary(boolean useDescriptionsInSummary) {
 		this.useDescriptionsInSummary = useDescriptionsInSummary;
+		return this;
+	}
+
+	@Override
+	public IConfig setEnableCodeParsing(boolean enableCodeParsing) {
+		this.enableCodeParsing = enableCodeParsing;
 		return this;
 	}
 
