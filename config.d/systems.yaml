@@ -16,6 +16,13 @@ types:
       - netty
       - http
       - questionable
+  - id: java.MCreator
+    type: net.mcreator.*
+    description: Created with MCreator
+    category: meta_systems
+    tags:
+      - meta_system
+      - questionable
 
 calls:
   - id: java.RuntimeExec
@@ -32,6 +39,22 @@ calls:
     tags:
       - meta_system
       - logging
+  - id: java.Calendar
+    method: java.util.Calendar.get
+    description: Uses calendar
+    category: meta_systems
+    tags:
+      - meta_system
+      - april_fools
+      - time
+  - id: java.Date
+    method: java.util.Date.*
+    description: Uses DateTime
+    category: meta_systems
+    tags:
+      - meta_system
+      - april_fools
+      - time
 
 annotations:
   - id: java.GameTest
