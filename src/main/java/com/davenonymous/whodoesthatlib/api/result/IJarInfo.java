@@ -25,6 +25,8 @@ public interface IJarInfo {
 
 	IJarInfo parentJar();
 
+	IJarInfo actualJar();
+
 	Optional<Path> parentJarPath();
 
 	Optional<byte[]> getFileContent(Path path);

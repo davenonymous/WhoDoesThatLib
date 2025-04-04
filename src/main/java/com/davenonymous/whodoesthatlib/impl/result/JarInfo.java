@@ -160,6 +160,15 @@ public class JarInfo implements IJarInfo {
 	}
 
 	@Override
+	public IJarInfo actualJar() {
+		IJarInfo currentJar = this;
+		while(currentJar.parentJar() != null) {
+			currentJar = currentJar.parentJar();
+		}
+		return currentJar;
+	}
+
+	@Override
 	public Optional<Path> parentJarPath() {
 		if(parentJar == null) {
 			return Optional.empty();
