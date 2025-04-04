@@ -86,6 +86,8 @@ tasks.withType<ShadowJar> {
     relocate("org.checkerframework", "com.davenonymous.whodoesthatlib.vendor.checkerframework")
     relocate("org.antlr", "com.davenonymous.whodoesthatlib.vendor.antlr")
     exclude("META-INF/maven/**", "META-INF/versions/**")
+
+    minimize()
 }
 
 publishing {
