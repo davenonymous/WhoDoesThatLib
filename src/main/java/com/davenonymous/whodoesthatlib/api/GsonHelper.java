@@ -1,4 +1,4 @@
-package com.davenonymous.whodoesthatlib.impl.serialize;
+package com.davenonymous.whodoesthatlib.api;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;

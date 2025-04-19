@@ -5,7 +5,7 @@ import com.davenonymous.whodoesthatlib.api.analyzers.IJarAnalyzer;
 import com.davenonymous.whodoesthatlib.api.result.IJarInfo;
 import com.davenonymous.whodoesthatlib.impl.GlobHelper;
 import com.davenonymous.whodoesthatlib.impl.result.JarInfo;
-import com.davenonymous.whodoesthatlib.impl.serialize.GsonHelper;
+import com.davenonymous.whodoesthatlib.api.GsonHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

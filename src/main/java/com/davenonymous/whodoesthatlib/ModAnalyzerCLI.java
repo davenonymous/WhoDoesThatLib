@@ -2,14 +2,18 @@ package com.davenonymous.whodoesthatlib;
 
 import com.davenonymous.whodoesthatlib.api.IConfig;
 import com.davenonymous.whodoesthatlib.api.IJarScanner;
+import com.davenonymous.whodoesthatlib.api.result.IJarInfo;
+import com.davenonymous.whodoesthatlib.api.result.IModdedJarInfo;
 import com.davenonymous.whodoesthatlib.api.result.IScanResult;
-import com.davenonymous.whodoesthatlib.impl.serialize.GsonHelper;
+import com.davenonymous.whodoesthatlib.api.GsonHelper;
 import picocli.CommandLine;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -71,9 +75,30 @@ public class ModAnalyzerCLI implements Callable<Integer> {
 			scanner.addDescriptorConfigPath(analysisDescriptorConfigPaths);
 
 			scanner.loadDescriptors();
+
+			scanner.addProgressListener((progress, event) -> {
+				System.out.printf("%5.01f%% %3d/%3d/%3d, %3d: %s\n",
+					progress.getProgress() * 100,
+					progress.scannedJars(), progress.analyzedJars(),
+					progress.totalJars(), progress.foundMods(), event);
+			});
+
 			IScanResult result = scanner.process();
 
 			System.out.printf("Processed %d jars in %d ms\n", result.jars().size(), (System.nanoTime() - scanStartTime) / 1000000);
+			ArrayList<IJarInfo> sorted = new ArrayList<>(result.jars());
+			sorted.sort(Comparator.comparing(jarInfo -> {
+				var jarName = jarInfo.jar().toString();
+				return jarName.substring(jarName.lastIndexOf(File.separator) + 1, jarName.length() - 4);
+			}));
+
+
+//			for(var jar : sorted) {
+//				if(jar instanceof IModdedJarInfo<?>) {
+//					continue;
+//				}
+//				System.out.printf("Jar: %s [%s] %s\n", jar.jar().getFileName(), jar.parentJar() == null ? "-" : jar.actualJar().jar().getFileName(), jar.getTags());
+//			}
 
 			final long jsonEncodeStartTime = System.nanoTime();
 			var jsonResult = result.asJson();

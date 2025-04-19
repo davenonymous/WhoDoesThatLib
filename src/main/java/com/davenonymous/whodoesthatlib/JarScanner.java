@@ -2,11 +2,13 @@ package com.davenonymous.whodoesthatlib;
 
 import com.davenonymous.whodoesthatlib.api.IJarAnalyzerRegistry;
 import com.davenonymous.whodoesthatlib.api.IJarScanner;
+import com.davenonymous.whodoesthatlib.api.IScanProgressListener;
 import com.davenonymous.whodoesthatlib.api.descriptors.ISummaryDescription;
 import com.davenonymous.whodoesthatlib.api.result.IScanResult;
 import com.davenonymous.whodoesthatlib.impl.DescriptorConfigVisitor;
 import com.davenonymous.whodoesthatlib.impl.JarAnalyzers;
 import com.davenonymous.whodoesthatlib.impl.JarFileVisitor;
+import com.davenonymous.whodoesthatlib.impl.ProgressTracker;
 import com.davenonymous.whodoesthatlib.impl.result.ScanResult;
 
 import java.io.IOException;
@@ -14,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 public class JarScanner implements IJarScanner {
 	private List<Path> analysisPaths = new ArrayList<>();
@@ -26,6 +27,8 @@ public class JarScanner implements IJarScanner {
 	public Map<String, List<ISummaryDescription>> descriptorsByTag;
 	public Config config = new Config();
 	public JarAnalyzers jarAnalyzers = new JarAnalyzers(this);
+	public List<IScanProgressListener> listeners = new ArrayList<>();
+	public ProgressTracker progressTracker = new ProgressTracker();
 
 	public Config config() {
 		return config;
@@ -107,26 +110,69 @@ public class JarScanner implements IJarScanner {
 	}
 
 	@Override
+	public IJarScanner addProgressListener(IScanProgressListener listener) {
+		this.listeners.add(listener);
+		return this;
+	}
+
+	public IJarScanner reportProgress(String message) {
+		for(var listener : listeners) {
+			progressTracker.callListener(listener, message);
+		}
+		return this;
+	}
+
+	@Override
 	public IScanResult process() throws IOException {
+		progressTracker.reset();
+		reportProgress("Starting scan");
+		for(var path : heritagePaths) {
+			if(Files.isDirectory(path)) {
+				try(var stream = Files.list(path)) {
+					progressTracker.totalJars += (int) stream.filter(p -> p.toString().endsWith(".jar")).count();
+				}
+			} else if (path.toString().endsWith(".jar")) {
+				progressTracker.totalJars++;
+			}
+			reportProgress("Searching heritage paths for jars");
+		}
+
+		for(var path : analysisPaths) {
+			if(Files.isDirectory(path)) {
+				try(var stream = Files.list(path)) {
+					progressTracker.totalJars += (int) stream.filter(p -> p.toString().endsWith(".jar")).count();
+				}
+			} else if (path.toString().endsWith(".jar")) {
+				progressTracker.totalJars++;
+			}
+			reportProgress("Searching analysis paths for jars");
+		}
+
 		var visitor = new JarFileVisitor(this);
 		var heritageVisitor = new JarFileVisitor(this, true);
 		for(var path : heritagePaths) {
 			Files.walkFileTree(path, heritageVisitor);
+			reportProgress("Scanning jars in heritage path");
 		}
 		for(var path : analysisPaths) {
 			Files.walkFileTree(path, visitor);
+			reportProgress("Scanning jars in analysis path");
 		}
 
 		var visitorJars = visitor.getJarFiles().values();
 		var heritageJars = heritageVisitor.getJarFiles().values();
 
+		reportProgress("Building heritage tree");
 		var scanResult = new ScanResult(
 			this,
 			visitorJars,
 			heritageJars
 		);
 
+		reportProgress("Analyzing jars");
 		var analyzer = new ResultAnalyzer(this, scanResult);
+		progressTracker.analyzedJars = progressTracker.scannedJars;
+		reportProgress("Done");
 		return scanResult;
 
 	}

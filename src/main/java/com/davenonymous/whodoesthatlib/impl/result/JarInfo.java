@@ -4,6 +4,7 @@ import com.davenonymous.whodoesthatlib.JarScanner;
 import com.davenonymous.whodoesthatlib.api.IJarScanner;
 import com.davenonymous.whodoesthatlib.api.descriptors.ISummaryDescription;
 import com.davenonymous.whodoesthatlib.api.result.IJarInfo;
+import com.davenonymous.whodoesthatlib.api.result.IModdedJarInfo;
 import com.davenonymous.whodoesthatlib.api.result.asm.IAnnotationInfo;
 import com.davenonymous.whodoesthatlib.api.result.asm.IClassInfo;
 import com.davenonymous.whodoesthatlib.api.result.asm.IFieldInfo;
@@ -198,6 +199,17 @@ public class JarInfo implements IJarInfo {
 	@Override
 	public Map<ISummaryDescription, List<Object>> getSummaries() {
 		return this.summaries;
+	}
+
+	@Override
+	public Map<ISummaryDescription, List<Object>> getNestedSummaries() {
+		Map<ISummaryDescription, List<Object>> nestedSummaries = new HashMap<>(this.summaries);
+		for(IJarInfo childJar : childJars) {
+			if(!(childJar instanceof IModdedJarInfo<?>)) {
+				nestedSummaries.putAll(childJar.getNestedSummaries());
+			}
+		}
+		return nestedSummaries;
 	}
 
 	@Override

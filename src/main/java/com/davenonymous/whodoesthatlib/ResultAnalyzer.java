@@ -22,7 +22,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class ResultAnalyzer {
-	private IJarScanner jarScanner;
+	private JarScanner jarScanner;
 	private final IScanResult result;
 
 	private final List<IModClassAnalyzer<?>> classAnalyzers = new ArrayList<>();
@@ -200,6 +200,9 @@ public class ResultAnalyzer {
 				jarInfoImpl.setJsonAnalysisResult(jarJson);
 				jarInfoImpl.setShortestBasePackage(shortestCommonPackage != null ? shortestCommonPackage : "");
 			}
+
+			jarScanner.progressTracker.analyzedJars++;
+			jarScanner.reportProgress("Analyzed jar " + jarInfo.jar().getFileName());
 		}
 	}
 }

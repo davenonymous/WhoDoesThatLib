@@ -1,5 +1,6 @@
 package com.davenonymous.whodoesthatlib.impl;
 
+import com.davenonymous.whodoesthatlib.JarScanner;
 import com.davenonymous.whodoesthatlib.api.IJarScanner;
 import com.davenonymous.whodoesthatlib.api.result.IJarInfo;
 import com.davenonymous.whodoesthatlib.impl.result.JarInfo;
@@ -28,22 +29,22 @@ public class JarFileVisitor extends SimpleFileVisitor<Path> {
 
 	private boolean heritageOnly = false;
 	private IJarInfo parentJar;
-	private IJarScanner jarScanner;
+	private JarScanner jarScanner;
 	private ExecutorService executor;
 
-	public JarFileVisitor(IJarScanner jarScanner) {
+	public JarFileVisitor(JarScanner jarScanner) {
 		this(jarScanner, null);
 	}
 
-	public JarFileVisitor(IJarScanner jarScanner, IJarInfo parentJar) {
+	public JarFileVisitor(JarScanner jarScanner, IJarInfo parentJar) {
 		this(jarScanner, parentJar, false);
 	}
 
-	public JarFileVisitor(IJarScanner jarScanner, boolean heritageOnly) {
+	public JarFileVisitor(JarScanner jarScanner, boolean heritageOnly) {
 		this(jarScanner, null, heritageOnly);
 	}
 
-	public JarFileVisitor(IJarScanner jarScanner, IJarInfo parentJar, boolean heritageOnly) {
+	public JarFileVisitor(JarScanner jarScanner, IJarInfo parentJar, boolean heritageOnly) {
 		this.parentJar = parentJar;
 		this.jarScanner = jarScanner;
 		this.heritageOnly = heritageOnly;
@@ -69,6 +70,11 @@ public class JarFileVisitor extends SimpleFileVisitor<Path> {
 					parentJarInfo.addChildJar(jarInfo);
 				}
 				jarFiles.put(file, jarResult);
+				jarScanner.progressTracker.scannedJars++;
+				if(parentJar != null) {
+					jarScanner.progressTracker.totalJars++;
+				}
+				jarScanner.reportProgress("Scanned " + file.getFileName().toString());
 
 				// Search for nested jars
 				Path rootInJar = fs.getPath("/");

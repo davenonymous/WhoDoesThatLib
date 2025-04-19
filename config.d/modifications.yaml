@@ -61,7 +61,7 @@ events:
   - event: net.neoforged.neoforge.event.entity.living.LivingDamageEvent
     id: event.LivingDamage
     description: Modifies Entity Damage Received
-    category: action_events
+    category: entity_events
     tags:
       - modification
       - entity
@@ -109,7 +109,7 @@ events:
       - tooltip
   - event: net.neoforged.neoforge.client.event.ScreenEvent$Render$Post
     id: event.Screen.Render.Post
-    description: Modifies GUI Rendering
+    description: Modifies Post GUI Rendering
     category: render_events
     tags:
       - modification
@@ -118,7 +118,7 @@ events:
       - rendering
   - event: net.neoforged.neoforge.client.event.ScreenEvent$Render$Pre
     id: event.Screen.Render.Pre
-    description: Modifies GUI Rendering
+    description: Modifies Pre GUI Rendering
     category: render_events
     tags:
       - modification

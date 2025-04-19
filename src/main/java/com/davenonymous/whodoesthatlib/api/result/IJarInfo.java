@@ -207,6 +207,14 @@ public interface IJarInfo {
 	 */
 	Map<ISummaryDescription, List<Object>> getSummaries();
 
+
+	/**
+	 * Similar to {@link #getSummaries()} but includes the summaries from nested non-mod JARs.
+	 *
+	 * @return Map of summary descriptions to lists of extra data objects
+	 */
+	Map<ISummaryDescription, List<Object>> getNestedSummaries();
+
 	/**
 	 * Adds a summary to the JAR info.
 	 *

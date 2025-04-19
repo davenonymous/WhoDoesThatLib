@@ -4,6 +4,7 @@ import com.davenonymous.whodoesthatlib.JarScanner;
 import com.davenonymous.whodoesthatlib.api.IJarAnalyzerRegistry;
 import com.davenonymous.whodoesthatlib.api.analyzers.IJarAnalyzer;
 import com.davenonymous.whodoesthatlib.api.result.IJarInfo;
+import com.davenonymous.whodoesthatlib.api.result.IModdedJarInfo;
 import com.davenonymous.whodoesthatlib.impl.jar.*;
 import com.davenonymous.whodoesthatlib.impl.result.JarInfo;
 import com.davenonymous.whodoesthatlib.impl.result.fabric.FabricJarInfo;
@@ -81,6 +82,13 @@ public class JarAnalyzers implements IJarAnalyzerRegistry {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+
+		if(result instanceof IModdedJarInfo<?> moddedJarInfo && moddedJarInfo.mods() != null && !moddedJarInfo.mods().isEmpty()) {
+			var mod = moddedJarInfo.mods().getFirst();
+			jarScanner.progressTracker.foundMods++;
+			jarScanner.reportProgress("Found mod: " + mod.displayName());
+		}
+
 
 		return result;
 	}

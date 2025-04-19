@@ -99,4 +99,12 @@ public interface IScanResult {
 	 * @return A list of {@link ISummaryDescription}s.
 	 */
 	List<ISummaryDescription> getSummaryDescriptionsByTag(String tag);
+
+
+	/**
+	 * Returns a list of all descriptors that were actually found in at least one of the jars.<br/>
+	 *
+	 * @return A map of descriptor info objects to sets of {@link IJarInfo} objects that used them
+	 */
+	Map<ISummaryDescription, Set<IJarInfo>> getUsedDescriptors();
 }

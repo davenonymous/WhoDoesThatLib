@@ -196,6 +196,16 @@ public interface IJarScanner {
 	 */
 	IJarScanner loadDescriptors() throws IOException;
 
+
+	/**
+	 * Adds a progress listener to the scanner.<br/>
+	 * This will be called during the scanning process on various steps.<br/>
+	 *
+	 * @param listener The progress listener to add.
+	 * @return This instance of {@link IJarScanner} for chaining.
+	 */
+	IJarScanner addProgressListener(IScanProgressListener listener);
+
 	/**
 	 * Processes the jars and returns the result.<br/>
 	 * This will scan all jars added using {@link #addAnalysisPath(Path)} or {@link #addAnalysisPath(Collection)}.

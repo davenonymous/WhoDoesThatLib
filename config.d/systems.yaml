@@ -180,14 +180,14 @@ events:
       - chat
   - event: net.neoforged.neoforge.client.event.ClientTickEvent$Post
     id: event.ClientTick.Post
-    description: Runs Client Tick Logic
+    description: Runs Client Post Tick Logic
     category: tick_events
     tags:
       - meta_system
       - ticker
   - event: net.neoforged.neoforge.client.event.ClientTickEvent$Pre
     id: event.ClientTick.Pre
-    description: Runs Client Tick Logic
+    description: Runs Client Pre Tick Logic
     category: tick_events
     tags:
       - meta_system
@@ -210,7 +210,7 @@ events:
       - entity
   - event: net.neoforged.neoforge.event.tick.EntityTickEvent$Post
     id: event.EntityTick.Post
-    description: Runs Entity Tick Logic
+    description: Runs Entity Post Tick Logic
     category: tick_events
     tags:
       - meta_system
@@ -218,7 +218,7 @@ events:
       - entity
   - event: net.neoforged.neoforge.event.tick.EntityTickEvent$Pre
     id: event.EntityTick.Pre
-    description: Runs Entity Tick Logic
+    description: Runs Entity Pre Tick Logic
     category: tick_events
     tags:
       - meta_system
@@ -255,7 +255,7 @@ events:
       - mod_plugin
   - event: net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent$Post
     id: event.ItemEntityPickup.Post
-    description: Listens to Item Pickup Events
+    description: Listens to Post Item Pickup Events
     category: game_events
     tags:
       - meta_system
@@ -263,7 +263,7 @@ events:
       - pickup
   - event: net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent$Pre
     id: event.ItemEntityPickup.Pre
-    description: Listens to Item Pickup Events
+    description: Listens to Pre Item Pickup Events
     category: game_events
     tags:
       - meta_system
@@ -279,7 +279,7 @@ events:
       - pickup
   - event: net.neoforged.neoforge.event.tick.LevelTickEvent$Post
     id: event.LevelTick.Post
-    description: Runs World Tick Logic
+    description: Runs World Post Tick Logic
     category: tick_events
     tags:
       - meta_system
@@ -287,7 +287,7 @@ events:
       - world
   - event: net.neoforged.neoforge.event.tick.LevelTickEvent$Pre
     id: event.LevelTick.Pre
-    description: Runs World Tick Logic
+    description: Runs World Pre Tick Logic
     category: tick_events
     tags:
       - meta_system
@@ -577,7 +577,7 @@ events:
   - event: net.neoforged.neoforge.event.entity.player.PlayerInteractEvent$LeftClickBlock
     id: event.PlayerInteract.LeftClickBlock
     description: Listens to Left Click Block Events
-    category: entity_events
+    category: action_events
     tags:
       - meta_system
       - player
@@ -586,7 +586,7 @@ events:
   - event: net.neoforged.neoforge.event.entity.player.PlayerInteractEvent$LeftClickEmpty
     id: event.PlayerInteract.LeftClickEmpty
     description: Handles Left Clicks with Empty Hands (Client-side)
-    category: entity_events
+    category: action_events
     tags:
       - meta_system
       - player
@@ -594,7 +594,7 @@ events:
   - event: net.neoforged.neoforge.event.entity.player.PlayerInteractEvent$RightClickBlock
     id: event.PlayerInteract.RightClickBlock
     description: Listens to Right Click Block Events
-    category: entity_events
+    category: action_events
     tags:
       - meta_system
       - player
@@ -603,7 +603,7 @@ events:
   - event: net.neoforged.neoforge.event.entity.player.PlayerInteractEvent$RightClickEmpty
     id: event.PlayerInteract.RightClickEmpty
     description: Handles Right Clicks with Empty Hands (Client-side)
-    category: entity_events
+    category: action_events
     tags:
       - meta_system
       - player
@@ -611,7 +611,7 @@ events:
   - event: net.neoforged.neoforge.event.entity.player.PlayerInteractEvent$RightClickItem
     id: event.PlayerInteract.RightClickItem
     description: Handles Right Clicks with Items
-    category: entity_events
+    category: action_events
     tags:
       - meta_system
       - player
@@ -619,7 +619,7 @@ events:
       - action
   - event: net.neoforged.neoforge.event.tick.PlayerTickEvent$Post
     id: event.PlayerTick.Post
-    description: Runs Player Tick Logic
+    description: Runs Player Post Tick Logic
     category: tick_events
     tags:
       - meta_system
@@ -627,7 +627,7 @@ events:
       - player
   - event: net.neoforged.neoforge.event.tick.PlayerTickEvent$Pre
     id: event.PlayerTick.Pre
-    description: Runs Player Tick Logic
+    description: Runs Player Pre Tick Logic
     category: tick_events
     tags:
       - meta_system
@@ -800,7 +800,7 @@ events:
       - server
   - event: net.neoforged.neoforge.event.tick.ServerTickEvent$Post
     id: event.ServerTick.Post
-    description: Runs Server Tick Logic
+    description: Runs Server Post Tick Logic
     category: tick_events
     tags:
       - meta_system
@@ -808,7 +808,7 @@ events:
       - server
   - event: net.neoforged.neoforge.event.tick.ServerTickEvent$Pre
     id: event.ServerTick.Pre
-    description: Runs Server Tick Logic
+    description: Runs Server Pre Tick Logic
     category: tick_events
     tags:
       - meta_system

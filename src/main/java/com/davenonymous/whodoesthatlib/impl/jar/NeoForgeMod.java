@@ -18,10 +18,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class NeoForgeMod implements IJarAnalyzer {
 	@Override
@@ -77,6 +74,7 @@ public class NeoForgeMod implements IJarAnalyzer {
 
 					mods.add(NeoForgeModInfo.fromToml(modTable, modDependencies, customProperties, toml));
 				}
+				mods.sort(Comparator.comparing(info -> info.displayName().toLowerCase(Locale.ROOT)));
 				jarInfo.setMods(mods);
 			} catch (IOException e) {
 

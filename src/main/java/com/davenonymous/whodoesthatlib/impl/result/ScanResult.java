@@ -11,6 +11,7 @@ import com.mojang.serialization.JsonOps;
 import org.objectweb.asm.Type;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ScanResult implements IScanResult {
 	List<IJarInfo> jars;
@@ -27,6 +28,8 @@ public class ScanResult implements IScanResult {
 		if(jarScanner.config().doesIncludeHeritageJars()) {
 			this.jars.addAll(heritageJars);
 		}
+
+		this.jars.sort(Comparator.comparing(jar -> jar.jar().getFileName().toString().toLowerCase(Locale.ROOT)));
 
 		parentToChildren = new HashMap<>();
 		parentToChildrenInfo = new HashMap<>();
@@ -108,6 +111,18 @@ public class ScanResult implements IScanResult {
 		}
 
 		return jarScanner.getSummaryDescriptionsByTag(tag);
+	}
+
+	@Override
+	public Map<ISummaryDescription, Set<IJarInfo>> getUsedDescriptors() {
+		Map<ISummaryDescription, Set<IJarInfo>> summariesInJars = new HashMap<>();
+		for(IJarInfo jar : jars()) {
+			Set<ISummaryDescription> descriptions = jar.getSummaries().keySet();
+			for(ISummaryDescription description : descriptions) {
+				summariesInJars.computeIfAbsent(description, k -> new HashSet<>()).add(jar);
+			}
+		}
+		return summariesInJars;
 	}
 
 	public List<IJarInfo> jars() {
